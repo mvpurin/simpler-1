@@ -1,0 +1,12 @@
+I, [2023-03-19T17:37:03.041139 #108033]  INFO -- :       Request:    GET /tests/101
+      Handler:    TestsController#show
+      Parameters: {:id=>"101"}
+      Response:   200 text/html tests/show
+
+I, [2023-03-19T17:37:26.947305 #108083]  INFO -- :     
+
+      Request:    GET /tests/101
+      Handler:    TestsController#show
+      Parameters: {:id=>"101"}
+      Response:   200 text/html tests/show
+

@@ -17,8 +17,12 @@ module Simpler
       
       send(action)
       set_default_headers if @response['Content-Type'].nil?
+      set_default_status
 
       write_response
+
+      @request.env['simpler.response.status'] = @response.status
+      @request.env['simpler.response.header'] = @response['Content-Type']
 
       @response.finish
     end
@@ -33,6 +37,14 @@ module Simpler
       @response['Content-Type'] = 'text/html'
     end
 
+    def set_default_status
+      status 200
+    end
+
+    def status(code)
+      @response.status = code
+    end
+
     def write_response
       body = render_body
 
@@ -44,7 +56,7 @@ module Simpler
     end
 
     def params
-      @request.params
+      @request.env['simpler.request.params'].merge!(@request.params)
     end
 
     def render(template)
@@ -53,7 +65,6 @@ module Simpler
       elsif template.class == Hash && template.keys[0] == :plain
         @response['Content-Type'] = 'text/plain'  
       end
-
       @request.env['simpler.template'] = template
     end
 
