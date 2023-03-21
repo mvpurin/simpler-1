@@ -10,9 +10,7 @@ module Simpler
     end
 
     def render(binding)
-      template = File.read(template_path)
-
-      ERB.new(template).result(binding)
+      choose_template(binding)
     end
 
     private
@@ -35,5 +33,16 @@ module Simpler
       Simpler.root.join(VIEW_BASE_PATH, "#{path}.html.erb")
     end
 
+    def choose_template(binding)
+      template = @env['simpler.template']
+
+      if template.class == String 
+        template = File.read(template_path)
+        ERB.new(template).result(binding)
+      elsif template.class == Hash && template.keys[0] == :plain
+        template[:plain]
+      end
+    end
+    
   end
 end
